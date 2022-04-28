@@ -6,6 +6,7 @@ const serve = require('koa-static')
 const mount = require('koa-mount')
 const logger = require('koa-logger');
 const bodyParser = require('koa-body');
+const favicon = require('koa-favicon');
 const fs =require('fs')
 const path = require('path')
 const app = new Koa();
@@ -41,12 +42,12 @@ app.use(logger());
 app.use(views(`${__dirname}/src/views`, {
   extension: 'ejs'
 }));
-
-app.use(mount('/public',serve(path.join(__dirname, './src/public'))))
+app.use(favicon(path.join(__dirname, '/src/public/favicon.ico')));
+app.use(mount('/public',serve(path.join(__dirname, '/src/public'))))
 
 
 app.use(router.routes());
 app.use(router.allowedMethods());
 app.use(bodyParser());
 
-setInterval(()=>{require('./module/status')("test").then(res => {data = res})},30000)
+setInterval(()=>{require('./module/status')("test").then(res => {res.LastUpdated = new Date().toISOString();data = res})},30000)

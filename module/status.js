@@ -1,7 +1,7 @@
 const stats = require('pc-stats')
-var {portList,script} = require('../statusConfig.json')
+const fetch = require('cross-fetch')
+var {portList,script,url} = require('../statusConfig.json')
 const detect = require('detect-port');
-
 var serverStats = {}
 
 portList.forEach(Element => {
@@ -9,7 +9,14 @@ portList.forEach(Element => {
 });
 
 module.exports = async(test) => {
-    await Update()
+    if(script){
+        serverStats = fetch(url).then(res => {
+            if(res.stats >= 400){return}
+            return res.json()
+        })
+    }else{
+        await Update()
+    }
     return serverStats
 }
 

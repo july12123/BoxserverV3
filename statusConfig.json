@@ -1,4 +1,11 @@
 {
-    "script":false,
-    "portList":[{"Name":"HTTP Website","Port":80},{"Name":"HTTPS Website","Port":443},{"Name":"Terraria","Port":7777},{"Name":"Minecraft","Port":25565},{"Name":"Cam System","Port":8090}]
+    "script":true,
+    "url":"https://boxserver.win/api/status",
+    "portList":[
+        {"Name":"HTTP Website","Port":80},
+        {"Name":"HTTPS Website","Port":443},
+        {"Name":"Terraria","Port":7777},
+        {"Name":"Minecraft","Port":25565},
+        {"Name":"Cam System","Port":8090}
+    ]
 }

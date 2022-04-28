@@ -9,5 +9,5 @@ router
     .get('/404',ctx => ctx.render('404'))
 router
     .get(apiPath, async ctx => {ctx.body = "Welcome to Boxserver API!"})
-    .get(apiPath+'/status', async ctx => ctx.body = data)
+    .get(apiPath+'/status', async ctx => {try{data.CurrentTime = new Date().toISOString();ctx.body = data}catch{ctx.body = {}}})
 module.exports = router;
