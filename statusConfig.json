@@ -1,6 +1,6 @@
 {
-    "script":true,
-    "url":"https://boxserver.win/api/status",
+    "script":false,
+    "url":"",
     "portList":[
         {"Name":"HTTP Website","Port":80},
         {"Name":"HTTPS Website","Port":443},

@@ -11,6 +11,8 @@ const fs =require('fs')
 const path = require('path')
 const app = new Koa();
 
+require('dotenv').config();
+
 const router = require('./middleware/router');
 
 var options;
@@ -24,8 +26,11 @@ options = {
 }
 
 //run server on ports defined on Phttp and Phttps
-http.createServer(app.callback()).listen(process.env.PHttp || 80)
-https.createServer(options, app.callback()).listen(process.env.PHttps || 443)
+
+const httpServe = http.createServer(app.callback())
+const httpsServer = https.createServer(options, app.callback())
+httpServe.listen(process.env.PHttp || 80,process.env.hostname || "0.0.0.0")
+httpsServer.listen(process.env.PHttps || 443,process.env.hostname || "0.0.0.0")
 console.log(`Server Started`)
 
 app.listen = () => {

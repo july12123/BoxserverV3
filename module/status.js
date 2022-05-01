@@ -10,10 +10,14 @@ portList.forEach(Element => {
 
 module.exports = async(test) => {
     if(script){
-        serverStats = fetch(url).then(res => {
-            if(res.stats >= 400){return}
-            return res.json()
-        })
+        try{
+            serverStats = fetch(url).then(res => {
+                if(res.stats >= 400){return}
+                return res.json()
+            })
+        }catch{
+            console.log("external api had issues")
+        }
     }else{
         await Update()
     }
