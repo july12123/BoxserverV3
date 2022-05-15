@@ -4,16 +4,16 @@ const Koa = require("koa")
 const views = require('koa-views');
 const serve = require('koa-static')
 const mount = require('koa-mount')
-const logger = require('koa-logger');
 const bodyParser = require('koa-body');
 const favicon = require('koa-favicon');
-const fs =require('fs')
+const fs = require('fs')
 const path = require('path')
 const app = new Koa();
 
 require('dotenv').config();
 
 const router = require('./middleware/router');
+const logger = require('./middleware/logger')
 
 var options;
 try{
