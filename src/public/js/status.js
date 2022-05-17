@@ -20,11 +20,9 @@ try{
     makeTable()
     async function makeTable(){
       //calls api
-      fetch("/api/status").then(response => response.json()).then(Stuff => {
+      fetch("https://api.boxserver.win/status").then(response => response.json()).then(Stuff => {
       var table="";
-      try{
-      if(!Stuff.CurrentTime)return
-      }catch{return}
+      try{if(!Stuff.CurrentTime)return}catch{return}
       GlobalVar = Stuff;
       //pushes into table
       Stuff.Port.forEach(element => {
@@ -53,5 +51,5 @@ try{
       var ram = document.getElementById("ram")
       ram.innerHTML = `${parseFloat(Stuff.Ram.used).toFixed(2)}/${parseFloat(Stuff.Ram.total).toFixed(2)}${Stuff.Ram.unit}`
       ram.style.width= `${((Stuff.Ram.used/Stuff.Ram.total)*100).toFixed(2)}%`
-    }).catch(console.error);
-  }
+  }).catch(console.error);
+}

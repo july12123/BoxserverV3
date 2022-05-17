@@ -5,9 +5,13 @@ module.exports = function (ctx,next){
         const start = Date.now();
         try {
             await next();
-        }
-        finally {
-            const ip = ctx.ips.length > 0 ? ctx.ips[0] : ctx.ip;
+        }finally{
+            var ip = ""
+            if(ctx.request.headers['cf-connecting-ip'] != undefined){
+                ip = ctx.request.headers['cf-connecting-ip']
+            }else{
+                ip = ctx.ips.length > 0 ? ctx.ips[0] : ctx.ip;
+            }
             const method = ctx.method;
             const url = ctx.originalUrl;
             const duration = Date.now() - start;
