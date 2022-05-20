@@ -18,14 +18,10 @@ const router = require('./middleware/router');
 const logger = require('./middleware/logger');
 
 var options;
-try{
-options = {
+try{options = {
   key: fs.readFileSync(__dirname+'/Keys/key.pem'),
   cert: fs.readFileSync(__dirname+'/Keys/cert.pem')
-};
-}catch(err){
-  console.error("Invalid or Missing Key and Cert",err)
-}
+}}catch(err){console.error("Invalid or Missing Key and Cert",err)}
 
 
 
@@ -58,4 +54,7 @@ console.log('website started')
 
 
 //api stuff
-setInterval(()=>{require('./module/status')("test").then(res => {res.LastUpdated = new Date().toISOString();data = res})},30000)
+
+require('./module/status')("test").then(res => {res.LastUpdated = new Date().toISOString();data = res})
+
+setInterval(()=>{require('./module/status')("test").then(res => {res.LastUpdated = new Date().toISOString();data = res})},15000)

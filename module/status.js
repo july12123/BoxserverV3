@@ -1,7 +1,7 @@
 const stats = require('pc-stats')
 const fetch = require('cross-fetch')
 var {portList,script,url} = require('../statusConfig.json')
-const detect = require('detect-port');
+const find = require('find-process')
 var serverStats = {}
 
 portList.forEach(Element => {
@@ -26,25 +26,34 @@ module.exports = async(test) => {
 
 async function Update(){
     var ports = ""
-    portList.forEach(data =>detect(data.Port).then((_port) => {
+    var count = 0
+    portList.forEach(async data =>{
         var status = ""
-        if(ports!= ""){
-            ports += ","
+        const type = (typeof data.condition).toString()
+        switch (type){
+            case "number":
+                var list = await find('port',data.condition)
+                if(ports != ""){ports += ","}
+                if (!list.length) {status = "Down"} else {status = "Up"};ports += `{"Name":"${data.Name}","Port":${data.condition},"Status":"${status}"}`;
+                break
+            case "string":
+                var list = await find('name', data.condition,data.extra || false)
+                if(ports != ""){ports += ","}
+                if (!list.length) {status = "Down"} else {status = "Up"};ports += `{"Name":"${data.Name}","Port":null,"Status":"${status}"}`;
+                break
         }
-        if (data.Port == _port) {
-            status = "Down"
-        } else {
-            status = "Up"
-        }
-        ports += `{"Name":"${data.Name}","Port":${data.Port},"Status":"${status}"}`
-    }));
+        count++
+        if(portList.length == count)final(ports)
+    })
+}
+
+function final(ports){
     stats().then((stats) => {
         var total = 0
-        stats.cpu.threads.forEach(thread =>{
-            total += thread.usage
-        })
+        stats.cpu.threads.forEach(thread =>{total += thread.usage})
         try{total = total/stats.cpu.threads.length}catch{}
-        serverStats = JSON.parse(`{"CPU":${Math.round(total)},"Ram":{"total":${parseFloat(stats.ram.total)},"used":${Number(Math.round((parseFloat(stats.ram.total)-parseFloat(stats.ram.free))+'e2')+'e-2')},"unit":"${stats.ram.unit}"},"Port":[${ports}]}`)
+        var js = `{"CPU":${Math.round(total)},"Ram":{"total":${parseFloat(stats.ram.total)},"used":${Number(Math.round((parseFloat(stats.ram.total)-parseFloat(stats.ram.free))+'e2')+'e-2')},"unit":"${stats.ram.unit}"},"Port":[${ports}]}`
+        serverStats = JSON.parse(js)
     }).catch((err) => {
         console.log(err)
     })
