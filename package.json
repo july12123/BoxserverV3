@@ -16,7 +16,7 @@
     "koa-static": "^5.0.0",
     "koa-views": "^8.0.0",
     "moment": "^2.29.3",
-    "mongoose": "^6.3.1",
+    "mongoose": "^6.4.6",
     "mongoose-unique-validator": "^3.0.0",
     "pc-stats": "^0.0.7"
   }
